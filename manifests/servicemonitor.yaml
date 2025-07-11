@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nyx
+  namespace: nyx
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: anyx
+  namespaceSelector:
+    matchNames:
+      - nyx
+  endpoints:
+    - port: prometheus-metrics
+      targetPort: 9090
+      interval: 30s
+      path: /metrics

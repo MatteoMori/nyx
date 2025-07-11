@@ -1,0 +1,2 @@
+prometheusPort: "9090"
+verbosity: 1

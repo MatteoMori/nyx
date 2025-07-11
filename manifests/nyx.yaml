@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nyx
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nyx-config
+  namespace: nyx
+data:
+  nyx.yaml: |-
+    prometheusPort: "9090"
+    verbosity: 1
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nyx
+  namespace: nyx
+  labels:
+    app: nyx
+spec:
+  selector:
+    matchLabels:
+      app: nyx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nyx
+    spec:
+      serviceAccountName: nyx
+      containers:
+        - name: server
+          image: nyx:latest
+          args:
+            - "start"
+            - "-v=2"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: nyx-config
+              mountPath: /etc/nyx/nyx.yaml
+              subPath: nyx.yaml
+      volumes:
+        - name: nyx-config
+          configMap:
+            name: nyx-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nyx 
+  namespace: nyx   
+  labels:
+   app: nyx           
+spec:
+  selector:
+    app: nyx       
+  ports:
+    - name: http
+      protocol: TCP              
+      port: 80                 
+      targetPort: 8080 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nyx-metrics 
+  namespace: nyx   
+  labels:
+   app: nyx           
+spec:
+  selector:
+    app: nyx       
+  ports:
+    - name: prometheus-metrics
+      protocol: TCP              
+      port: 9090                 
+      targetPort: 9090                        
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nyx
+  namespace: nyx
