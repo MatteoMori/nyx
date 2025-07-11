@@ -1,8 +1,11 @@
 # Nyx
 
-Nyx is a GoLang demo application designed for validating Kubernetes controllers, Prometheus metrics, and modern cloud-native best practices. It provides a simple HTTP API and exposes Prometheus metrics, making it ideal for testing, learning, and integration with Kubernetes monitoring stacks.
+<img src="./logo/20250711_205629629_iOS.jpg" width="150">
 
----
+----
+
+> Nyx is a GoLang demo application designed for validating Kubernetes controllers, Prometheus metrics, and modern cloud-native best practices. It provides a simple HTTP API and exposes Prometheus metrics, making it ideal for testing, learning, and integration with Kubernetes monitoring stacks.
+
 
 ## Features
 
